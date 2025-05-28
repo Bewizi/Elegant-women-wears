@@ -1,6 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
+:root {
+    --var-rich-black: "#00111C";
+    --var-Eerie-black: "#232323";
+    --var-blood-red: "#650000"
+
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    .text-rich-black {
+        color: var(--var-rich-black);
+    }
+
+    .text-Eerie-black {
+        color: var(--var-Eerie-black);
+    }
+
+    .text-blood-red {
+        color: var(--var-blood-red);
+    }
+}
