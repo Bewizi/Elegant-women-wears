@@ -11,11 +11,13 @@ const isMenuOpen = ref<boolean | null>(false)
     <header class="py-3">
       <div class="flex items-center justify-between">
         <!--      logo-->
-        <div>Logo</div>
+        <div>
+          <img alt="" class="object-cover w-[50px] block" src="/images/Logo.png" />
+        </div>
         <!--      logo-->
 
         <!--        desktop navigation-->
-        <nav class="hidden md:flex space-x-8">
+        <nav class="hidden md:flex space-x-20 text-lg font-raleway font-medium">
           <AppLink to="">Home</AppLink>
           <AppLink to="">Products</AppLink>
           <AppLink to="">About</AppLink>
