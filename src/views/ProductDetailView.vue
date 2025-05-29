@@ -4,12 +4,16 @@ import AppContainer from '@/components/AppContainer.vue'
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cart'
+import { Icon } from '@iconify/vue'
+import Button from '@/components/ui/Button.vue'
+import { httpClient } from '@/server/httpClient.ts'
+import type { Product } from '@/types'
 
 const route = useRoute()
 const router = useRouter()
 const cartStore = useCartStore()
 
-const product = ref({
+const product = ref<Product>({
   id: 0,
   name: '',
   price: 0,
@@ -23,47 +27,23 @@ const product = ref({
 
 const quantity = ref(1)
 const selectedImage = ref('')
+const sampleProducts = ref<Product[]>([])
 
-// In a real app, this would be an API call
-onMounted(() => {
-  // Simulate fetching product by ID
-
-  const sampleProducts = [
-    {
-      id: 1,
-      name: 'Traditional Ankara Dress',
-      price: 15000,
-      image: 'Beautiful-Green-Asooke-For-you.jpeg',
-      category: 'clothing',
-      description: 'Beautiful handcrafted Ankara dress with comfortable fit for all occasions.',
-      rating: 4.5,
-      details:
-        'Made with 100% cotton Ankara fabric. Machine washable. Available in various sizes from Small to XXXL.',
-      inStock: true,
-      images: ['ankara-dress.jpg', 'ankara-dress-2.jpg', 'ankara-dress-3.jpg'],
-    },
-
-    {
-      id: 2,
-      name: 'Comfortable Walking Shoes',
-      price: 12000,
-      image: 'A-beautiful-lady-on-glasses.jpeg',
-      category: 'clothing',
-      description: 'Soft, supportive shoes perfect for daily walks and errands.',
-      rating: 4.8,
-      details:
-        'Made with 100% cotton Ankara fabric. Machine washable. Available in various sizes from Small to XXXL.',
-      inStock: true,
-      images: ['ankara-dress.jpg', 'ankara-dress-2.jpg', 'ankara-dress-3.jpg'],
-    },
-  ]
-
-  const foundProduct = sampleProducts.find((p) => p.id === Number(route.params.id))
-  if (foundProduct) {
-    product.value = foundProduct
-    selectedImage.value = foundProduct.image[0]
-  } else {
-    router.push('/products')
+onMounted(async () => {
+  try {
+    const response = await httpClient.get('/products')
+    console.log(response.data)
+    sampleProducts.value = response.data
+    const foundProduct = sampleProducts.value.find((p) => p.id === Number(route.params.id))
+    if (foundProduct) {
+      product.value = foundProduct
+      selectedImage.value = foundProduct.image
+    } else {
+      router.push('/products')
+    }
+  } catch (e) {
+    console.error('Error fetching product:', e)
+    // router.push('/products')
   }
 })
 
@@ -92,18 +72,7 @@ const addToCart = () => {
           </li>
           <li>
             <div class="flex items-center">
-              <svg
-                class="w-6 h-6 text-gray-400"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  clip-rule="evenodd"
-                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  fill-rule="evenodd"
-                ></path>
-              </svg>
+              <Icon height="24" icon="weui:arrow-filled" style="color: #00000040" width="12" />
               <RouterLink
                 class="ml-1 text-sm font-medium text-gray-700 hover:text-primary md:ml-2"
                 to="/products"
@@ -114,18 +83,7 @@ const addToCart = () => {
           </li>
           <li aria-current="page">
             <div class="flex items-center">
-              <svg
-                class="w-6 h-6 text-gray-400"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  clip-rule="evenodd"
-                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  fill-rule="evenodd"
-                ></path>
-              </svg>
+              <Icon height="24" icon="weui:arrow-filled" style="color: #00000040" width="12" />
               <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">{{ product.name }}</span>
             </div>
           </li>
@@ -138,7 +96,11 @@ const addToCart = () => {
           <!-- Product Images -->
           <div>
             <div class="mb-4 rounded-lg overflow-hidden">
-              <img :alt="product.name" :src="product.image" class="w-full h-96 object-contain" />
+              <img
+                :alt="product.name"
+                :src="`/images/products/${selectedImage}`"
+                class="w-full h-[500px] object-contain rounded-lg"
+              />
             </div>
             <!--            <div class="grid grid-cols-4 gap-2">-->
             <!--              <button-->
@@ -221,35 +183,30 @@ const addToCart = () => {
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4">
-              <button
+              <Button
                 :class="{ 'opacity-50 cursor-not-allowed': !product.inStock }"
                 :disabled="!product.inStock"
-                class="flex-1 bg-primary text-white px-6 py-4 rounded-lg text-lg font-semibold hover:bg-purple-700 transition flex items-center justify-center"
+                class="flex-1 rounded-lg text-lg font-roboto font-semibold hover:bg-purple-700 transition flex items-center justify-center"
                 @click="addToCart"
               >
-                <svg
-                  class="h-6 w-6 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                  />
-                </svg>
+                <Icon
+                  class="mr-4"
+                  height="24"
+                  icon="mdi:cart-outline"
+                  style="color: #ffffff"
+                  width="24"
+                />
+
                 Add to Cart
-              </button>
-              <button
+              </Button>
+              <Button
                 :class="{ 'opacity-50 cursor-not-allowed': !product.inStock }"
                 :disabled="!product.inStock"
-                class="flex-1 border-2 border-primary text-primary px-6 py-4 rounded-lg text-lg font-semibold hover:bg-primary hover:text-white transition"
+                class="flex-1 font-roboto px-6 py-4 rounded-lg text-lg font-semibold"
+                variant="secondary"
               >
                 Buy Now
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -342,7 +299,6 @@ const addToCart = () => {
         </button>
       </div>
     </div>
-    <h1>Product View Page</h1>
   </AppContainer>
 </template>
 
