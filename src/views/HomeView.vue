@@ -28,23 +28,23 @@ const featuredProducts = [
   },
 ]
 
-const categories = [
-  {
-    id: 1,
-    name: 'Clothing',
-    image: '',
-  },
-  {
-    id: 2,
-    name: 'Footwear',
-    image: '',
-  },
-  {
-    id: 3,
-    name: 'Accessories',
-    image: '',
-  },
-]
+// const categories = [
+//   {
+//     id: 1,
+//     name: 'Clothing',
+//     image: '',
+//   },
+//   {
+//     id: 2,
+//     name: 'Footwear',
+//     image: '',
+//   },
+//   {
+//     id: 3,
+//     name: 'Accessories',
+//     image: '',
+//   },
+// ]
 </script>
 
 <template>
@@ -62,16 +62,16 @@ const categories = [
       </div>
     </AppContainer>
 
-    <!--    CATEGORIES-->
-    <AppContainer class="mt-32">
-      <div>
-        <h2 class="text-3xl font-bold mb-12 text-center text-gray-800">Shop by Category</h2>
+    <!--    &lt;!&ndash;    CATEGORIES&ndash;&gt;-->
+    <!--    <AppContainer class="mt-32">-->
+    <!--      <div>-->
+    <!--        <h2 class="text-3xl font-bold mb-12 text-center text-gray-800">Shop by Category</h2>-->
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          <CategoryCard v-for="category in categories" :key="category.id" :category="category" />
-        </div>
-      </div>
-    </AppContainer>
+    <!--        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">-->
+    <!--          <CategoryCard v-for="category in categories" :key="category.id" :category="category" />-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </AppContainer>-->
 
     <CTASection />
 
