@@ -1,0 +1,75 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Traditional Ankara Dress",
+      "price": 15000,
+      "image": "Beautiful-Green-Asooke-For-you.jpeg",
+      "category": "clothing",
+      "description": "Beautiful handcrafted Ankara dress with comfortable fit for all occasions.",
+      "rating": 4.5,
+      "details": "Made with 100% cotton Ankara fabric. Machine washable. Available in various sizes from Small to XXXL.",
+      "inStock": true,
+      "images": [
+        "ankara-dress.jpg",
+        "ankara-dress-2.jpg",
+        "ankara-dress-3.jpg"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Comfortable Walking Shoes",
+      "price": 12000,
+      "image": "A-beautiful-lady-on-glasses.jpeg",
+      "category": "clothing",
+      "description": "Soft, supportive shoes perfect for daily walks and errands.",
+      "rating": 4.8,
+      "details": "Made with 100% cotton Ankara fabric. Machine washable. Available in various sizes from Small to XXXL.",
+      "inStock": true,
+      "images": [
+        "ankara-dress.jpg",
+        "ankara-dress-2.jpg",
+        "ankara-dress-3.jpg"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Vibrant Elegance in Ankara",
+      "price": 8000,
+      "image": "Vibrant Elegance in Ankara.jpeg",
+      "category": "accessories",
+      "description": "This elegant Ankara dress features bold purple floral patterns, delicate white lace details, and a matching headwrap for a timeless look",
+      "rating": 4.2
+    },
+    {
+      "id": 4,
+      "name": "Purple Elegance in Ankara",
+      "price": 5000,
+      "image": "Purple Elegance in Ankara.jpeg",
+      "category": "accessories",
+      "description": "A stunning purple and white patterned Ankara outfit with lace details and a matching headwrap in a boutique",
+      "rating": 4.7
+    },
+    {
+      "id": 5,
+      "name": "Vibrant Traditional Attire",
+      "price": 9500,
+      "image": "Vibrant Traditional Attire.jpeg",
+      "category": "clothing",
+      "description": "Elegantly dressed in a purple and white Ankara outfit with lace details and a matching headwrap.\n",
+      "details": "Made with 100% cotton Ankara fabric. Machine washable. Available in various sizes from Small to XXXL.",
+      "inStock": true,
+      "rating": 4.3
+    },
+    {
+      "id": 6,
+      "name": "Elegant Traditional Attire",
+      "price": 13500,
+      "image": "Elegant Traditional Attire.jpeg",
+      "category": "footwear",
+      "description": "A vibrant purple and blue Ankara outfit with intricate patterns and lace details, accessorized with gold jewelry in a stylish room.",
+      "rating": 4.9
+    }
+  ]
+}
+
