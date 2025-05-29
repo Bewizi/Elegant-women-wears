@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import AppContainer from '@/components/AppContainer.vue'
 import HeroSection from '@/components/sections/HeroSection.vue'
-import { motion } from 'motion-v'
+// import { motion } from 'motion-v'
 import CTASection from '@/components/sections/CTASection.vue'
 import ProductCard from '@/components/ProductCard.vue'
-import CategoryCard from '@/components/CategoryCard.vue'
-import Footer from '@/components/layouts/Footer.vue'
+// import CategoryCard from '@/components/CategoryCard.vue'
+// import Footer from '@/components/layouts/Footer.vue'
 
 const featuredProducts = [
   {
@@ -74,7 +74,5 @@ const featuredProducts = [
     <!--    </AppContainer>-->
 
     <CTASection />
-
-    <Footer />
   </main>
 </template>
