@@ -7,11 +7,11 @@ import { Icon } from '@iconify/vue'
 
 const cartStore = useCartStore()
 
-const removeItem = (productId: number) => {
+const removeItem = (productId: string) => {
   cartStore.removeFromCart(productId)
 }
 
-const updateQuantity = (productId: number, quantity: number) => {
+const updateQuantity = (productId: string, quantity: number) => {
   if (quantity > 0) {
     cartStore.updateCart(productId, quantity)
   } else {

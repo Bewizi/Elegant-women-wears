@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import AppContainer from '@/components/AppContainer.vue'
 
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cart'
 import { Icon } from '@iconify/vue'
@@ -32,15 +32,16 @@ const sampleProducts = ref<Product[]>([])
 onMounted(async () => {
   try {
     const response = await httpClient.get('/products')
-    console.log(response.data)
+    // console.log(response.data)
     sampleProducts.value = response.data
-    const foundProduct = sampleProducts.value.find((p) => p.id === Number(route.params.id))
+    const foundProduct = sampleProducts.value.find((p) => String(p.id) === route.params.id)
     if (foundProduct) {
       product.value = foundProduct
       selectedImage.value = foundProduct.image
-    } else {
-      router.push('/products')
     }
+    // else {
+    //   router.push('/products')
+    // }
   } catch (e) {
     console.error('Error fetching product:', e)
     // router.push('/products')
