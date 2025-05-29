@@ -1,0 +1,349 @@
+<script lang="ts" setup>
+import AppContainer from '@/components/AppContainer.vue'
+
+import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useCartStore } from '@/stores/cart'
+
+const route = useRoute()
+const router = useRouter()
+const cartStore = useCartStore()
+
+const product = ref({
+  id: 0,
+  name: '',
+  price: 0,
+  image: '',
+  category: '',
+  description: '',
+  rating: 0,
+  details: '',
+  inStock: true,
+})
+
+const quantity = ref(1)
+const selectedImage = ref('')
+
+// In a real app, this would be an API call
+onMounted(() => {
+  // Simulate fetching product by ID
+
+  const sampleProducts = [
+    {
+      id: 1,
+      name: 'Traditional Ankara Dress',
+      price: 15000,
+      image: 'Beautiful-Green-Asooke-For-you.jpeg',
+      category: 'clothing',
+      description: 'Beautiful handcrafted Ankara dress with comfortable fit for all occasions.',
+      rating: 4.5,
+      details:
+        'Made with 100% cotton Ankara fabric. Machine washable. Available in various sizes from Small to XXXL.',
+      inStock: true,
+      images: ['ankara-dress.jpg', 'ankara-dress-2.jpg', 'ankara-dress-3.jpg'],
+    },
+
+    {
+      id: 2,
+      name: 'Comfortable Walking Shoes',
+      price: 12000,
+      image: 'A-beautiful-lady-on-glasses.jpeg',
+      category: 'clothing',
+      description: 'Soft, supportive shoes perfect for daily walks and errands.',
+      rating: 4.8,
+      details:
+        'Made with 100% cotton Ankara fabric. Machine washable. Available in various sizes from Small to XXXL.',
+      inStock: true,
+      images: ['ankara-dress.jpg', 'ankara-dress-2.jpg', 'ankara-dress-3.jpg'],
+    },
+  ]
+
+  const foundProduct = sampleProducts.find((p) => p.id === Number(route.params.id))
+  if (foundProduct) {
+    product.value = foundProduct
+    selectedImage.value = foundProduct.image[0]
+  } else {
+    router.push('/products')
+  }
+})
+
+const addToCart = () => {
+  const productToAdd = {
+    ...product.value,
+    quantity: quantity.value,
+  }
+  cartStore.addToCart(productToAdd)
+}
+</script>
+
+<template>
+  <AppContainer class="bg-gray-50 min-h-screen py-12">
+    <div>
+      <!-- Breadcrumb -->
+      <nav aria-label="Breadcrumb" class="flex mb-6">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+          <li class="inline-flex items-center">
+            <RouterLink
+              class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary"
+              to="/"
+            >
+              Home
+            </RouterLink>
+          </li>
+          <li>
+            <div class="flex items-center">
+              <svg
+                class="w-6 h-6 text-gray-400"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  clip-rule="evenodd"
+                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  fill-rule="evenodd"
+                ></path>
+              </svg>
+              <RouterLink
+                class="ml-1 text-sm font-medium text-gray-700 hover:text-primary md:ml-2"
+                to="/products"
+              >
+                Products
+              </RouterLink>
+            </div>
+          </li>
+          <li aria-current="page">
+            <div class="flex items-center">
+              <svg
+                class="w-6 h-6 text-gray-400"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  clip-rule="evenodd"
+                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  fill-rule="evenodd"
+                ></path>
+              </svg>
+              <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">{{ product.name }}</span>
+            </div>
+          </li>
+        </ol>
+      </nav>
+
+      <!-- Product Details -->
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6">
+          <!-- Product Images -->
+          <div>
+            <div class="mb-4 rounded-lg overflow-hidden">
+              <img :alt="product.name" :src="product.image" class="w-full h-96 object-contain" />
+            </div>
+            <!--            <div class="grid grid-cols-4 gap-2">-->
+            <!--              <button-->
+            <!--                v-for="(image, index) in product.image"-->
+            <!--                :key="index"-->
+            <!--                :class="{-->
+            <!--                  'border-primary': selectedImage === image,-->
+            <!--                  'border-transparent': selectedImage !== image,-->
+            <!--                }"-->
+            <!--                class="border-2 rounded-lg overflow-hidden"-->
+            <!--                @click="selectedImage = image"-->
+            <!--              >-->
+            <!--                <img-->
+            <!--                  :alt="`${product.name} thumbnail ${index + 1}`"-->
+            <!--                  :src="`/images/products/${image}`"-->
+            <!--                  class="w-full h-20 object-cover"-->
+            <!--                />-->
+            <!--              </button>-->
+            <!--            </div>-->
+          </div>
+
+          <!-- Product Info -->
+          <div>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">{{ product.name }}</h1>
+            <div class="flex items-center mb-4">
+              <div class="flex items-center">
+                <svg
+                  v-for="star in 5"
+                  :key="star"
+                  :class="{
+                    'text-yellow-400': star <= Math.round(product.rating),
+                    'text-gray-300': star > Math.round(product.rating),
+                  }"
+                  class="h-5 w-5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+              </div>
+              <span class="text-gray-600 ml-2">{{ product.rating }} (24 reviews)</span>
+            </div>
+
+            <div class="mb-6">
+              <span class="text-3xl font-bold text-primary"
+                >₦{{ product.price.toLocaleString() }}</span
+              >
+              <span v-if="product.inStock" class="ml-2 text-green-600 font-medium">In Stock</span>
+              <span v-else class="ml-2 text-red-600 font-medium">Out of Stock</span>
+            </div>
+
+            <p class="text-gray-700 mb-6">{{ product.description }}</p>
+
+            <div class="mb-6">
+              <h3 class="text-lg font-semibold text-gray-800 mb-2">Details</h3>
+              <p class="text-gray-600">{{ product.details }}</p>
+            </div>
+
+            <div class="flex items-center mb-8">
+              <label class="text-lg font-medium text-gray-700 mr-4" for="quantity">Quantity:</label>
+              <div class="flex items-center border border-gray-300 rounded-lg">
+                <button
+                  :class="{ 'cursor-not-allowed opacity-50': quantity === 1 }"
+                  class="px-4 py-2 text-lg text-gray-600 hover:bg-gray-100"
+                  @click="quantity > 1 ? quantity-- : null"
+                >
+                  -
+                </button>
+                <span class="px-4 py-2 text-lg">{{ quantity }}</span>
+                <button
+                  class="px-4 py-2 text-lg text-gray-600 hover:bg-gray-100"
+                  @click="quantity++"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4">
+              <button
+                :class="{ 'opacity-50 cursor-not-allowed': !product.inStock }"
+                :disabled="!product.inStock"
+                class="flex-1 bg-primary text-white px-6 py-4 rounded-lg text-lg font-semibold hover:bg-purple-700 transition flex items-center justify-center"
+                @click="addToCart"
+              >
+                <svg
+                  class="h-6 w-6 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                  />
+                </svg>
+                Add to Cart
+              </button>
+              <button
+                :class="{ 'opacity-50 cursor-not-allowed': !product.inStock }"
+                :disabled="!product.inStock"
+                class="flex-1 border-2 border-primary text-primary px-6 py-4 rounded-lg text-lg font-semibold hover:bg-primary hover:text-white transition"
+              >
+                Buy Now
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reviews Section -->
+      <div class="mt-12 bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">Customer Reviews</h2>
+
+        <div class="mb-8">
+          <div class="flex items-center mb-4">
+            <div class="flex items-center mr-4">
+              <svg
+                v-for="star in 5"
+                :key="star"
+                :class="{ 'text-yellow-400': star <= 4, 'text-gray-300': star > 4 }"
+                class="h-6 w-6"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                />
+              </svg>
+            </div>
+            <span class="text-gray-700 font-medium">Based on 24 reviews</span>
+          </div>
+
+          <div class="space-y-6">
+            <!-- Sample Review -->
+            <div class="border-b border-gray-200 pb-6">
+              <div class="flex items-center mb-2">
+                <div class="flex items-center mr-4">
+                  <svg
+                    v-for="star in 5"
+                    :key="star"
+                    :class="{ 'text-yellow-400': star <= 5, 'text-gray-300': star > 5 }"
+                    class="h-5 w-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                    />
+                  </svg>
+                </div>
+                <span class="text-gray-700 font-medium">Adebisi O.</span>
+              </div>
+              <p class="text-gray-600 mb-2">Posted on March 15, 2023</p>
+              <p class="text-gray-800">
+                This dress is so comfortable and beautiful! The fabric is high quality and the fit
+                is perfect. I received many compliments when I wore it to my granddaughter's
+                wedding.
+              </p>
+            </div>
+
+            <!-- Another Sample Review -->
+            <div class="border-b border-gray-200 pb-6">
+              <div class="flex items-center mb-2">
+                <div class="flex items-center mr-4">
+                  <svg
+                    v-for="star in 5"
+                    :key="star"
+                    :class="{ 'text-yellow-400': star <= 4, 'text-gray-300': star > 4 }"
+                    class="h-5 w-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                    />
+                  </svg>
+                </div>
+                <span class="text-gray-700 font-medium">Chioma K.</span>
+              </div>
+              <p class="text-gray-600 mb-2">Posted on February 28, 2023</p>
+              <p class="text-gray-800">
+                Very nice dress, but the sizing runs a bit small. I would recommend ordering one
+                size up. The colors are vibrant and the material is comfortable.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <button class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition">
+          See All Reviews
+        </button>
+      </div>
+    </div>
+    <h1>Product View Page</h1>
+  </AppContainer>
+</template>
+
+<style scoped></style>
