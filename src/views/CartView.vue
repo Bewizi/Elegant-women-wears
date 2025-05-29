@@ -3,6 +3,7 @@ import AppContainer from '@/components/AppContainer.vue'
 
 import { useCartStore } from '@/stores/cart'
 import { RouterLink } from 'vue-router'
+import { Icon } from '@iconify/vue'
 
 const cartStore = useCartStore()
 
@@ -40,7 +41,7 @@ const updateQuantity = (productId: number, quantity: number) => {
                 <RouterLink :to="`/products/${item.id}`" class="flex-shrink-0 mb-4 sm:mb-0 sm:mr-6">
                   <img
                     :alt="item.name"
-                    :src="`@/assets/images/products/${item.image}`"
+                    :src="`/images/products/${item.image}`"
                     class="w-32 h-32 object-contain"
                   />
                 </RouterLink>
@@ -100,24 +101,18 @@ const updateQuantity = (productId: number, quantity: number) => {
 
           <!-- Empty Cart -->
           <div v-else class="bg-white p-12 rounded-lg shadow-md text-center">
-            <svg
-              class="h-16 w-16 mx-auto text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-              />
-            </svg>
+            <Icon
+              class="mx-auto"
+              height="46"
+              icon="mdi:cart-outline"
+              style="color: #000000"
+              width="46"
+            />
+
             <h3 class="text-xl font-medium text-gray-700 mt-4">Your cart is empty</h3>
-            <p class="text-gray-500 mt-2">Start shopping to add items to your cart</p>
+            <p class="text-[#6C757D] mt-2">Start shopping to add items to your cart</p>
             <RouterLink
-              class="mt-4 inline-block px-6 py-3 bg-primary text-white rounded-lg hover:bg-purple-700 transition"
+              class="mt-4 inline-block px-6 py-3 bg-[#00111c] text-white rounded-lg hover:bg-[#00111c]/80 transition"
               to="/products"
             >
               Continue Shopping
@@ -150,7 +145,7 @@ const updateQuantity = (productId: number, quantity: number) => {
           </div>
 
           <RouterLink
-            class="mt-6 block w-full bg-primary text-white text-center px-6 py-4 rounded-lg text-lg font-semibold hover:bg-purple-700 transition"
+            class="mt-6 block w-full bg-[#00111c] text-white text-center px-6 py-4 rounded-lg text-lg font-semibold hover:bg-purple-700 transition"
             to="/checkout"
           >
             Proceed to Checkout
@@ -178,20 +173,19 @@ const updateQuantity = (productId: number, quantity: number) => {
             <h3 class="text-lg font-medium mb-2">Payment Options</h3>
             <div class="grid grid-cols-3 gap-2">
               <div class="border rounded-lg p-2 flex justify-center">
-                <img alt="Paystack" class="h-8" src="" />
+                <img alt="Paystack" class="h-8" src="/images/svg/paystack-2.svg" />
               </div>
               <div class="border rounded-lg p-2 flex justify-center">
-                <img alt="Flutterwave" class="h-8" src="" />
+                <img alt="Flutterwave" class="h-8" src="/images/svg/flutterwave-2.svg" />
               </div>
               <div class="border rounded-lg p-2 flex justify-center">
-                <img alt="Bank Transfer" class="h-8" src="" />
+                <img alt="Bank Transfer" class="h-8" src="/images/svg/mastercard-4.svg" />
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <h1>Cart View Page</h1>
   </AppContainer>
 </template>
 
