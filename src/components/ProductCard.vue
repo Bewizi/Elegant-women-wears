@@ -5,9 +5,9 @@ import AppLink from '@/components/AppLink.vue'
 import Button from '@/components/ui/Button.vue'
 import { Icon } from '@iconify/vue'
 
-const props = defineProps<{
+defineProps<{
   product: {
-    id: number
+    id: string
     name: string
     price: number
     image: string
