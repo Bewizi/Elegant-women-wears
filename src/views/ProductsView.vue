@@ -2,79 +2,44 @@
 import AppContainer from '@/components/AppContainer.vue'
 import { useRoute } from 'vue-router'
 import ProductCard from '@/components/ProductCard.vue'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { httpClient } from '@/server/httpClient.ts'
+import type { Product } from '@/types'
 
 const route = useRoute()
 
-const products = ref([
-  {
-    id: 1,
-    name: 'Traditional Ankara Dress',
-    price: 15000,
-    image: 'Beautiful-Green-Asooke-For-you.jpeg',
-    category: 'clothing',
-    description: 'Beautiful handcrafted Ankara dress with comfortable fit for all occasions.',
-    rating: 4.5,
-  },
-  {
-    id: 2,
-    name: 'Comfortable Walking Shoes',
-    price: 12000,
-    image: 'A-beautiful-lady-on-glasses.jpeg',
-    category: 'footwear',
-    description: 'Soft, supportive shoes perfect for daily walks and errands.',
-    rating: 4.8,
-  },
-  {
-    id: 3,
-    name: 'Handwoven Basket',
-    price: 8000,
-    image: 'basket.jpg',
-    category: 'accessories',
-    description: 'Traditional handwoven basket for shopping or home decoration.',
-    rating: 4.2,
-  },
-  {
-    id: 4,
-    name: 'Head Tie (Gele)',
-    price: 5000,
-    image: 'gele.jpg',
-    category: 'accessories',
-    description: 'Elegant head tie for special occasions, easy to tie.',
-    rating: 4.7,
-  },
-  {
-    id: 5,
-    name: 'Loose-Fit Blouse',
-    price: 9500,
-    image: 'blouse.jpg',
-    category: 'clothing',
-    description: 'Comfortable loose-fit blouse with traditional Nigerian patterns.',
-    rating: 4.3,
-  },
-  {
-    id: 6,
-    name: 'Orthopedic Sandals',
-    price: 13500,
-    image: 'sandals.jpg',
-    category: 'footwear',
-    description: 'Supportive sandals with arch support for all-day comfort.',
-    rating: 4.9,
-  },
-])
-
+const products = ref<Product[]>([])
 const searchQuery = ref('')
-// const selectedCategory = ref(route.query.category?.toString || 'all')
+const isLoading = ref(true)
 
 const filteredProducts = computed(() => {
+  if (!products.value) return []
+
   return products.value.filter((product) => {
-    const matchesSearch =
+    // const matchesSearch =
+    return (
       product.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       product.description.toLowerCase().includes(searchQuery.value.toLowerCase())
+    )
     // const matchesCategory =
     //   selectedCategory.value === 'all' || product.category === selectedCategory.value
-    return matchesSearch
+    // return matchesSearch
   })
+})
+
+onMounted(async () => {
+  try {
+    isLoading.value = true
+    const response = await httpClient.get('/products')
+    products.value = response.data
+  } catch (e) {
+    console.error('Error fetching products:', e)
+    products.value = []
+  } finally {
+    isLoading.value = false
+  }
+
+  // const selectedCategory = ref(route.query.category?.toString || 'all')
 })
 
 const categories = computed(() => {
@@ -121,6 +86,10 @@ const categories = computed(() => {
         <!--            {{ category === 'all' ? 'All Categories' : category }}-->
         <!--          </option>-->
         <!--        </select>-->
+      </div>
+
+      <div v-if="isLoading" class="text-center py-12">
+        <p class="text-gray-600">Loading products...</p>
       </div>
 
       <!-- Products Grid -->
