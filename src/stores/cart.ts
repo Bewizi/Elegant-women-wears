@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
 type Product = {
-  id: number
+  id: string
   name: string
   price: number
   image: string
@@ -27,11 +27,11 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  const removeFromCart = (productId: number) => {
+  const removeFromCart = (productId: string) => {
     items.value = items.value.filter((item) => item.id !== productId)
   }
 
-  const updateCart = (productId: number, quantity: number) => {
+  const updateCart = (productId: string, quantity: number) => {
     const item = items.value.find((item) => item.id === productId)
     if (item) {
       item.quantity = quantity
