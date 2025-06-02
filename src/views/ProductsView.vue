@@ -1,14 +1,13 @@
 <script lang="ts" setup>
 import AppContainer from '@/components/AppContainer.vue'
-import { useRoute } from 'vue-router'
 import ProductCard from '@/components/ProductCard.vue'
 import { computed, onMounted, ref } from 'vue'
-import { httpClient } from '@/server/httpClient.ts'
 import type { Product } from '@/types'
+import { supabase } from '@/lib/supabaseClient.ts'
 
-const route = useRoute()
+// const route = useRoute()
 
-const products = ref<Product[]>([])
+const products = ref<Product[] | null>([])
 const searchQuery = ref('')
 const isLoading = ref(true)
 
@@ -30,8 +29,8 @@ const filteredProducts = computed(() => {
 onMounted(async () => {
   try {
     isLoading.value = true
-    const response = await httpClient.get('/products')
-    products.value = response.data
+    const { data } = await supabase.from('Products').select('*')
+    products.value = data
   } catch (e) {
     console.error('Error fetching products:', e)
     products.value = []
@@ -42,10 +41,10 @@ onMounted(async () => {
   // const selectedCategory = ref(route.query.category?.toString || 'all')
 })
 
-const categories = computed(() => {
-  const uniqueCategories = new Set(products.value.map((product) => product.category))
-  return ['all', ...uniqueCategories]
-})
+// const categories = computed(() => {
+//   const uniqueCategories = new Set(products.value.map((product) => product.category))
+//   return ['all', ...uniqueCategories]
+// })
 </script>
 
 <template>
