@@ -3,10 +3,11 @@ export interface Product {
   name: string
   price: number
   image: string
-  category: string
-  description: string
-  rating: number
+  category?: string
+  description?: string
+  rating?: number
   details?: string
   inStock?: boolean
   images?: string[]
+  quantity?: number
 }
