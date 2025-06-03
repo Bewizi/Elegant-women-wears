@@ -28,6 +28,16 @@ const routes = [
     component: () => import('../views/CartView.vue'),
   },
   {
+    path: '/checkout',
+    name: 'checkout',
+    component: () => import('@/views/CheckoutView.vue'),
+  },
+  {
+    path: '/order-confirmation/:id',
+    name: 'order-confirmation',
+    component: () => import('@/views/OrderConfirmationView.vue'),
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('../views/NotFoundView.vue'),
