@@ -4,6 +4,7 @@ import AppLink from '@/components/AppLink.vue'
 import { Icon } from '@iconify/vue'
 import { useCartStore } from '@/stores/cart.ts'
 import AppContainer from '@/components/AppContainer.vue'
+import { motion } from 'motion-v'
 
 const isMenuOpen = ref<boolean | null>(false)
 const cartStore = useCartStore()
@@ -47,11 +48,19 @@ const cartStore = useCartStore()
         </div>
 
         <!--      mobile menu-->
-        <div v-show="isMenuOpen" class="md:hidden">
-          <AppLink to="/" @click="isMenuOpen = false">Home</AppLink>
-          <AppLink to="/products" @click="isMenuOpen = false">Products</AppLink>
-          <AppLink to="/about" @click="isMenuOpen = false">About</AppLink>
-        </div>
+        <motion.div
+          :animate="{ opacity: isMenuOpen ? 1 : 0, y: isMenuOpen ? 0 : 20 }"
+          :initial="{ opacity: 0, y: 20 }"
+          :transition="{ duration: 0.3, ease: 'easeOut' }"
+          v-show="isMenuOpen"
+          class="md:hidden mt-6"
+        >
+          <nav class="flex flex-col font-raleway font-medium space-y-8">
+            <AppLink to="/" @click="isMenuOpen = false">Home</AppLink>
+            <AppLink to="/products" @click="isMenuOpen = false">Products</AppLink>
+            <AppLink to="/about" @click="isMenuOpen = false">About</AppLink>
+          </nav>
+        </motion.div>
       </header>
     </AppContainer>
   </section>
