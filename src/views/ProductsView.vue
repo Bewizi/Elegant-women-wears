@@ -18,7 +18,7 @@ const filteredProducts = computed(() => {
     // const matchesSearch =
     return (
       product.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchQuery.value.toLowerCase())
+      (product.description ?? '').toLowerCase().includes(searchQuery.value.toLowerCase())
     )
     // const matchesCategory =
     //   selectedCategory.value === 'all' || product.category === selectedCategory.value

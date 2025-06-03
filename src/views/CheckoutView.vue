@@ -245,7 +245,7 @@ const placeOrder = async () => {
                   </div>
                 </div>
                 <span class="text-gray-800 font-roboto"
-                  >₦{{ (item.price * item.quantity).toLocaleString() }}</span
+                  >₦{{ (item.price * (item.quantity || 0)).toLocaleString() }}</span
                 >
               </div>
             </div>

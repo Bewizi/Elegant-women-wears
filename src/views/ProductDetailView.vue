@@ -34,10 +34,13 @@ onMounted(async () => {
     const { data } = await supabase.from('Products').select('*')
     // console.log(response.data)
     sampleProducts.value = data
-    const foundProduct = sampleProducts.value.find((p) => String(p.id) === route.params.id)
-    if (foundProduct) {
-      product.value = foundProduct
-      selectedImage.value = foundProduct.image
+
+    if (sampleProducts.value) {
+      const foundProduct = sampleProducts.value.find((p) => String(p.id) === route.params.id)
+      if (foundProduct) {
+        product.value = foundProduct
+        selectedImage.value = foundProduct.image
+      }
     }
   } catch (e) {
     console.error('Error fetching product:', e)
@@ -129,8 +132,8 @@ const addToCart = () => {
                   v-for="star in 5"
                   :key="star"
                   :class="{
-                    'text-yellow-400': star <= Math.round(product.rating),
-                    'text-gray-300': star > Math.round(product.rating),
+                    'text-yellow-400': star <= Math.round(product.rating || 0),
+                    'text-gray-300': star > Math.round(product.rating || 0),
                   }"
                   class="h-5 w-5"
                   fill="currentColor"
