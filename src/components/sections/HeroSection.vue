@@ -3,7 +3,7 @@ import AppContainer from '@/components/AppContainer.vue'
 import AppLink from '@/components/AppLink.vue'
 import Button from '@/components/ui/Button.vue'
 import { motion } from 'motion-v'
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 
 // Preload image
 onMounted(() => {
