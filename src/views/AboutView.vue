@@ -70,7 +70,7 @@ const teamMembers = [
         <h2 class="text-3xl font-bold mb-12 text-center text-gray-800">Our Values</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="bg-white p-8 rounded-lg shadow-md text-center">
+          <div class="bg-white p-8 rounded-lg text-center">
             <div
               class="bg-primary bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
             >
@@ -83,7 +83,7 @@ const teamMembers = [
             </p>
           </div>
 
-          <div class="bg-white p-8 rounded-lg shadow-md text-center">
+          <div class="bg-white p-8 rounded-lg text-center">
             <div
               class="bg-primary bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
             >
@@ -96,7 +96,7 @@ const teamMembers = [
             </p>
           </div>
 
-          <div class="bg-white p-8 rounded-lg shadow-md text-center">
+          <div class="bg-white p-8 rounded-lg text-center">
             <div
               class="bg-primary bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
             >
@@ -121,7 +121,7 @@ const teamMembers = [
           <div
             v-for="member in teamMembers"
             :key="member.name"
-            class="bg-gray-50 rounded-lg overflow-hidden shadow-md"
+            class="bg-gray-50 rounded-lg overflow-hidden border"
           >
             <img
               :alt="member.name"
