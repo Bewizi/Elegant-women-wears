@@ -4,6 +4,7 @@ import { useCartStore } from '@/stores/cart'
 import { useRouter } from 'vue-router'
 import AppContainer from '@/components/AppContainer.vue'
 import { useOrderStore } from '@/stores/order'
+import { supabase } from '@/lib/supabaseClient'
 
 const orderStore = useOrderStore()
 const cartStore = useCartStore()
@@ -61,19 +62,57 @@ const states = [
   'Zamfara',
 ]
 
-const placeOrder = () => {
-  console.log('Order placed:', form.value)
+const placeOrder = async () => {
+  try {
+    const { data, error } = await supabase
+      .from('Order')
+      .insert({
+        // Customer information
+        firstName: form.value.firstName,
+        lastName: form.value.lastName,
+        email: form.value.email,
+        phone: form.value.phone,
+        address: form.value.address,
+        city: form.value.city,
+        state: form.value.state,
+        paymentMethod: form.value.paymentMethod,
+        rememberInfo: form.value.rememberInfo,
 
-  orderStore.setLastOrder({
-    id: '1234',
-    paymentMethod: form.value.paymentMethod,
-  })
+        // Required numeric fields
+        subtotal: cartStore.totalPrice,
+        deliveryFee: 1500,
+        total: cartStore.totalPrice + 1500,
 
-  cartStore.clearCart()
-  router.push({
-    name: 'order-confirmation',
-    params: { id: '1234' },
-  })
+        // Status field if you have one
+        orderStatus: 'pending',
+      })
+      .select('*')
+      .single()
+
+    // const orderId = data[0]?.id || '1234'
+    if (error) {
+      console.error('Supabase error:', error)
+      throw error
+    }
+
+    if (!data) {
+      throw new Error('No data returned from insert operation')
+    }
+    console.log('Order placed:', data)
+
+    orderStore.setLastOrder({
+      id: data.id,
+      paymentMethod: form.value.paymentMethod,
+    })
+
+    cartStore.clearCart()
+    router.push({
+      name: 'order-confirmation',
+      params: { id: data.id },
+    })
+  } catch (error) {
+    console.log('Error message', error)
+  }
 }
 </script>
 

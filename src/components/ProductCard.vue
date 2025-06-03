@@ -18,9 +18,7 @@ const cartStore = useCartStore()
 </script>
 
 <template>
-  <AppContainer
-    class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition py-8"
-  >
+  <AppContainer class="bg-white rounded-lg shadow overflow-hidden py-8">
     <AppLink :to="`/products/${product.id}`">
       <img
         :alt="product.name"
