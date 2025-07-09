@@ -1,4 +1,3 @@
-// import { onMounted } from 'vue'
 import axios from 'axios'
 
 export const httpClient = axios.create({
@@ -7,9 +6,6 @@ export const httpClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    // 'Access-Control-Allow-Origin': '*',
-    // 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    // 'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   },
 })
 
@@ -21,12 +17,12 @@ httpClient.interceptors.response.use(
   },
 )
 
-// onMounted(async () => {
-//   try {
-//     const res = await httpClient.get('/products')
-//     console.log(res)
-//     res.data.slice(3, 0)
-//   } catch (e) {
-//     console.error('Error fetching products:', e)
-//   }
-// })
+export const allProducts = async () => {
+  try {
+    const response = await httpClient.get('/allProducts')
+    return response.data
+  } catch (e) {
+    console.log('Error Fetching Data', e)
+    throw e
+  }
+}
