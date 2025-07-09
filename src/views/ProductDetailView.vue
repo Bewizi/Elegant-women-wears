@@ -42,22 +42,6 @@ onMounted(async () => {
     console.error('Error fetching product:', e)
     router.push('/products')
   }
-
-  // const { data } = await supabase.from('Products').select('*')
-  //   // console.log(response.data)
-  //   sampleProducts.value = data
-
-  //   if (sampleProducts.value) {
-  //     const foundProduct = sampleProducts.value.find((p) => String(p.id) === route.params.id)
-  //     if (foundProduct) {
-  //       product.value = foundProduct
-  //       selectedImage.value = foundProduct.image
-  //     }
-  //   }
-  // } catch (e) {
-  //   console.error('Error fetching product:', e)
-  //   router.push('/products')
-  // }
 })
 
 const addToCart = () => {
