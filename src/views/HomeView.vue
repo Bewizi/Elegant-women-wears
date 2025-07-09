@@ -4,23 +4,28 @@ import HeroSection from '@/components/sections/HeroSection.vue'
 import CTASection from '@/components/sections/CTASection.vue'
 import ProductCard from '@/components/ProductCard.vue'
 import { onMounted, ref } from 'vue'
-import { supabase } from '@/lib/supabaseClient.ts'
+// import { supabase } from '@/lib/supabaseClient.ts'
 import type { Product } from '@/types'
+import { httpClient } from '@/server/httpClient'
 
 const featuredProducts = ref<Product[] | null>([])
 
 onMounted(async () => {
   try {
-    const { data, error } = await supabase.from('Products').select('*')
+    const response = await httpClient.get('/allProducts')
+    console.log('Fetched Products:', response.data)
 
-    if (data) {
-      featuredProducts.value = data.slice(0, 3)
-    }
+    featuredProducts.value = response.data.slice(0, 6)
+    // debugger
 
-    if (error) {
-      alert(error.message)
-      console.log('Error Fetching Data', error)
-    }
+    // if (response) {
+    //   featuredProducts.value = response.data.slice(0, 3)
+    // }
+
+    // if (error) {
+    //   alert(error.message)
+    //   console.log('Error Fetching Data', error)
+    // }
   } catch (e) {
     console.log('Error Fetching Data', e)
   }
