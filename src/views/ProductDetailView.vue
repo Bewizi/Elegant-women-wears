@@ -7,7 +7,8 @@ import { useCartStore } from '@/stores/cart'
 import { Icon } from '@iconify/vue'
 import Button from '@/components/ui/Button.vue'
 import type { Product } from '@/types'
-import { supabase } from '@/lib/supabaseClient.ts'
+// import { supabase } from '@/lib/supabaseClient.ts'
+import { httpClient } from '@/server/httpClient'
 
 const route = useRoute()
 const router = useRouter()
@@ -27,25 +28,36 @@ const product = ref<Product>({
 
 const quantity = ref(1)
 const selectedImage = ref('')
-const sampleProducts = ref<Product[] | null>([])
+// const sampleProducts = ref<Product[] | null>([])
 
 onMounted(async () => {
   try {
-    const { data } = await supabase.from('Products').select('*')
-    // console.log(response.data)
-    sampleProducts.value = data
+    const response = await httpClient.get('/getProduct', {
+      params: { id: route.params.id },
+    })
 
-    if (sampleProducts.value) {
-      const foundProduct = sampleProducts.value.find((p) => String(p.id) === route.params.id)
-      if (foundProduct) {
-        product.value = foundProduct
-        selectedImage.value = foundProduct.image
-      }
-    }
+    product.value = response.data
+    selectedImage.value = response.data.image
   } catch (e) {
     console.error('Error fetching product:', e)
     router.push('/products')
   }
+
+  // const { data } = await supabase.from('Products').select('*')
+  //   // console.log(response.data)
+  //   sampleProducts.value = data
+
+  //   if (sampleProducts.value) {
+  //     const foundProduct = sampleProducts.value.find((p) => String(p.id) === route.params.id)
+  //     if (foundProduct) {
+  //       product.value = foundProduct
+  //       selectedImage.value = foundProduct.image
+  //     }
+  //   }
+  // } catch (e) {
+  //   console.error('Error fetching product:', e)
+  //   router.push('/products')
+  // }
 })
 
 const addToCart = () => {
