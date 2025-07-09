@@ -3,7 +3,8 @@ import AppContainer from '@/components/AppContainer.vue'
 import ProductCard from '@/components/ProductCard.vue'
 import { computed, onMounted, ref } from 'vue'
 import type { Product } from '@/types'
-import { supabase } from '@/lib/supabaseClient.ts'
+// import { supabase } from '@/lib/supabaseClient.ts'
+import { httpClient } from '@/server/httpClient'
 
 // const route = useRoute()
 
@@ -29,8 +30,9 @@ const filteredProducts = computed(() => {
 onMounted(async () => {
   try {
     isLoading.value = true
-    const { data } = await supabase.from('Products').select('*')
-    products.value = data
+    const response = await httpClient.get('/allProducts')
+    console.log('Fetched Products:', response.data)
+    products.value = response.data
   } catch (e) {
     console.error('Error fetching products:', e)
     products.value = []
@@ -38,6 +40,16 @@ onMounted(async () => {
     isLoading.value = false
   }
 
+  // try {
+  //   isLoading.value = true
+  //   const { data } = await supabase.from('Products').select('*')
+  //   products.value = data
+  // } catch (e) {
+  //   console.error('Error fetching products:', e)
+  //   products.value = []
+  // } finally {
+  //   isLoading.value = false
+  // }
   // const selectedCategory = ref(route.query.category?.toString || 'all')
 })
 
